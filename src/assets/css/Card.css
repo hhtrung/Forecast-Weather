@@ -1,0 +1,85 @@
+.Card {
+  font-size: 15px;
+  display: block;
+  min-width: 300px;
+  text-align: center;
+  border: 1px solid black;
+  margin: 10px;
+  margin-left: 0px;
+  background-image: url("./../picture/wall.jpg");
+  color: white;
+}
+
+.listCard {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  display: inline-block;
+}
+
+.nameCity {
+  display: inline-block;
+  padding: 5px 15px 10px 15px;
+  font-size: 20px;
+  background-color: red;
+  border: 1px solid red;
+  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;
+}
+
+.iconDes i {
+  font-size: 50px;
+  padding: 10px 0px;
+}
+
+.tempC {
+  font-size: 100px;
+}
+
+.tempC i {
+  font-size: 16px;
+}
+
+.footer-body,
+.lowest,
+.highest {
+  display: flex;
+}
+
+.footer-body .highest {
+  margin-left: auto;
+  margin-right: 10px;
+  padding-bottom: 8px;
+}
+
+.footer-body .lowest {
+  margin-left: 10px;
+}
+
+.footer-body .tempMaxMin {
+  font-size: 14px;
+}
+
+.icon {
+  display: block;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  padding: 0 5px;
+}
+
+.footer {
+  display: flex;
+  background-color: white;
+  color: black;
+  padding: 5px;
+}
+
+.humidity {
+  display: flex;
+}
+
+.wind {
+  display: flex;
+  margin-left: auto;
+}

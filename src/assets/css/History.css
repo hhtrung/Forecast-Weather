@@ -1,0 +1,8 @@
+.row{
+    cursor: pointer;
+}
+
+.row:hover{
+    background-color: rgb(31, 231, 161);
+    color: rgb(62, 125, 226);
+}

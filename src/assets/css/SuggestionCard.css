@@ -1,0 +1,13 @@
+.suggestion{
+    max-width: 66.67%;
+}
+.Card{
+    max-width: 33.33%;
+    display: inline-block;
+    float: left;
+}
+
+.suggestion .row{
+    margin: 5px 10px;
+    padding: 2px 5px;
+}
