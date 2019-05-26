@@ -2,10 +2,9 @@ import React from "react";
 
 class ItemSuggest extends React.Component {
   render() {
-    let {name} = this.props;
     return (
       <div {...this.props} className="row">
-        {name}
+        {this.props.name}
       </div>
     );
   }

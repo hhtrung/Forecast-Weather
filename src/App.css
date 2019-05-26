@@ -1,6 +1,7 @@
 .App{
   display: flex;
   margin: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .App .content{
@@ -16,7 +17,7 @@
   display: flex;
 }
 
-.App input:focus{
-  background-color: rgb(198, 221, 243);
-  color: rgb(167, 36, 36);
+.App input{
+  box-shadow: 5px 5px 2px grey;
+  margin-bottom: 20px;
 }

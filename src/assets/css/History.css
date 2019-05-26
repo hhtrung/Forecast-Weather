@@ -2,7 +2,12 @@
     cursor: pointer;
 }
 
-.row:hover{
-    background-color: rgb(31, 231, 161);
+.row .haveCity:hover{
     color: rgb(62, 125, 226);
+}
+
+.row .unknowCity{
+    text-decoration: line-through;
+    /* pointer-events: none; */
+    cursor: not-allowed;
 }

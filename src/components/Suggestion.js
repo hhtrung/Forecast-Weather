@@ -1,65 +1,47 @@
 import React from "react";
-
-import Card from "./Card";
 import ItemSuggest from "./ItemSuggest";
 import "./../assets/css/SuggestionCard.css";
-
+import axios from "axios";
 class Suggestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weathers: []
+      listCityMatched: []
     };
   }
 
+  componentDidUpdate(prevProps) {
+    let city = this.props.valueInput;
+    if (prevProps.valueInput !== this.props.valueInput) {
+      axios({
+        method: "GET",
+        url: `https://api.teleport.org/api/cities/?search=${city}&limit=005`,
+        data: null
+      })
+        .then(res => {
+          const listCityMatched = res.data._embedded["city:search-results"];
+          this.setState({
+            listCityMatched
+          });
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
   render() {
-    const { history, valueInput } = this.props;
-    const { weathers } = this.state;
-    let showSuggest = [];
-    history.map((item, index) => {
-      let result = new RegExp(valueInput).test(item.name);
-      if (result) {
-        showSuggest.push(item.name);
-      }
-      return null;
-    });
-
-    let uniqueSuggest = showSuggest.filter(function(item, pos) {
-      return showSuggest.indexOf(item) === pos;
-    });
-
-    let weathersSuggest = weathers.map((city, index) => {
-      return (
-        <Card
-          key={index}
-          nameCity={city.name}
-          tempC={(city.main.temp - 293.15).toFixed(0)}
-          des={city.weather[0].description}
-          tempMin={(city.main.temp_min - 293.15).toFixed(0)}
-          tempMax={(city.main.temp_max - 293.15).toFixed(0)}
-          humidity={city.main.humidity}
-          wind={city.wind.speed}
-          iconWeather={city.weather[0].main}
-        />
-      );
-    });
-
+    const { listCityMatched } = this.state;
     return (
       <div className="suggestion">
-        {uniqueSuggest.map((item, index) => {
-          if (valueInput !== "") {
-            return (
-              <ItemSuggest
-                name={item}
-                key={index}
-                index={index}
-                onClick={()=>this.props.handlerClick(uniqueSuggest[index])}
-              />
-            );
-          }
-          return null;
+        {listCityMatched.map((itemCityMatched, index) => {
+          let name = itemCityMatched.matching_full_name;
+          return (
+            <ItemSuggest
+              key={index}
+              name={name}
+              onClick={() => this.props.onClickSuggest(name)}
+            />
+          );
         })}
-        {weathersSuggest}
       </div>
     );
   }

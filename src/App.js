@@ -13,14 +13,38 @@ class App extends React.Component {
       cities: [],
       weathers: []
     };
+    this.inputElement = React.createRef();
   }
 
   componentDidMount() {
+    /********** focus input **********/
+    this.inputElement.current.focus();
+    /*********** take location ***********/
+    let geo_success = position => {
+      const lat = position.coords.latitude.toFixed(2);
+      const lon = position.coords.longitude.toFixed(2);
+
+      axios({
+        method: "GET",
+        url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=79e5a60cd7630f97308d4feaa26cf75d`,
+        data: null
+      }).then(res => {
+        this.setState({
+          weathers: [...this.state.weathers, res.data]
+        });
+      });
+    };
+
+    let geo_error = () => {
+      console.log("you was blocked your location");
+    };
+    navigator.geolocation.getCurrentPosition(geo_success, geo_error);
+
+    /*********** show history ***********/
     let history = JSON.parse(localStorage.getItem("history"));
     if (history) {
       return this.setState({
-        history,
-        valueInput: ""
+        history
       });
     }
     return this.setState({ history: [], valueInput: "" });
@@ -35,12 +59,10 @@ class App extends React.Component {
     }
   };
 
-  onClickSuggest = cityBefore => {
-    console.log("city: ", cityBefore);
-    let cityAfter = cityBefore.replace(/\s/g, "");
+  onClickSuggest = city => {
     axios({
       method: "GET",
-      url: `https://api.openweathermap.org/data/2.5/weather?q=${cityAfter}&APPID=79e5a60cd7630f97308d4feaa26cf75d`,
+      url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=79e5a60cd7630f97308d4feaa26cf75d`,
       data: null
     })
       .then(res => {
@@ -48,21 +70,11 @@ class App extends React.Component {
         this.setState({
           weathers: [...this.state.weathers, city]
         });
-        return (
-          <Card
-            change="change"
-            nameCity={city.name}
-            tempC={(city.main.temp - 293.15).toFixed(0)}
-            des={city.weather[0].description}
-            tempMin={(city.main.temp_min - 293.15).toFixed(0)}
-            tempMax={(city.main.temp_max - 293.15).toFixed(0)}
-            humidity={city.main.humidity}
-            wind={city.wind.speed}
-            iconWeather={city.weather[0].main}
-          />
-        );
       })
       .catch(err => console.log(err));
+    this.setState({
+      valueInput: ""
+    });
   };
 
   onChangeInput = event => {
@@ -73,8 +85,8 @@ class App extends React.Component {
 
   onKeyUp = event => {
     if (event.keyCode === 13) {
-      let cityBefore = event.target.value.trim();
-      let city = cityBefore.replace(/\s/g, "");
+      let city = event.target.value.trim();
+      let date = new Date().toDateString();
       if (city) {
         axios({
           method: "GET",
@@ -83,12 +95,11 @@ class App extends React.Component {
         })
           .then(res => {
             let data = res.data;
-            let date = new Date().toDateString();
             this.setState({
               valueInput: "",
               cities: [...this.state.cities, city],
               weathers: [...this.state.weathers, data],
-              history: [...this.state.history, { name: cityBefore, info: data, date: date }]
+              history: [...this.state.history, { name: city, info: data, date }]
             });
             localStorage.setItem("history", JSON.stringify(this.state.history));
           })
@@ -97,7 +108,7 @@ class App extends React.Component {
               valueInput: "",
               history: [
                 ...this.state.history,
-                { name: cityBefore, info: "wrong name" }
+                { name: city, info: "wrong name", date }
               ]
             });
             localStorage.setItem("history", JSON.stringify(this.state.history));
@@ -117,12 +128,15 @@ class App extends React.Component {
             onChange={this.onChangeInput}
             value={valueInput}
             onKeyUp={this.onKeyUp}
+            ref={this.inputElement}
           />
-          <Suggestion
-            history={history}
-            valueInput={valueInput}
-            handlerClick={this.onClickSuggest}
-          />
+          {valueInput !== "" && (
+            <Suggestion
+              valueInput={valueInput}
+              onClickSuggest={this.onClickSuggest}
+            />
+          )}
+
           <div className="listCard">
             {weathers.map((city, index) => {
               return (
@@ -150,6 +164,7 @@ class App extends React.Component {
                 key={index}
                 index={index}
                 date={his.date}
+                info={his.info}
                 onClick={() => this.onClickHistoryTag(index)}
               />
             );
