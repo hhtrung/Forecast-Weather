@@ -1,84 +1,81 @@
-.Card {
-  font-size: 15px;
-  display: block;
-  min-width: 300px;
-  text-align: center;
-  border: 1px solid black;
-  margin: 10px;
-  margin-left: 0px;
-  background-image: url("./../picture/wall.jpg");
-  color: white;
-}
-
 .listCard {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  margin-top: 60px;
 }
 
-.nameCity {
-  display: inline-block;
+.Card {
+  background-image: url("./../picture/wall.jpg");
+  color: white;
+  width: 320px;
+  box-sizing: border-box;
+  margin: 0 11% 5% 0;
+  max-height: 430px;
+  border: 1px solid black;
+}
+
+.Card .itemCenter {
+  justify-content: center;
+}
+
+.Card .title {
   padding: 5px 15px 10px 15px;
-  font-size: 20px;
   background-color: red;
-  border: 1px solid red;
   border-bottom-left-radius: 40%;
   border-bottom-right-radius: 40%;
 }
 
-.iconDes i {
+.row {
+  width: 320px;
+  padding: 0px;
+  padding-left: 24px;
+}
+
+.Card .footer {
+  background-color: white;
+  color: black;
+  padding: 14.5px 0px;
+}
+
+.Card .iconDes i {
   font-size: 50px;
   padding: 10px 0px;
 }
 
-.tempC {
+.Card .footerBody {
+  padding: 10px 0px;
+  padding-left: 25px;
+}
+
+.Card .temp {
   font-size: 100px;
 }
 
-.tempC i {
-  font-size: 16px;
-}
-
-.footer-body,
-.lowest,
-.highest {
-  display: flex;
-}
-
-.footer-body .highest {
-  margin-left: auto;
-  margin-right: 10px;
-  padding-bottom: 8px;
-}
-
-.footer-body .lowest {
-  margin-left: 10px;
-}
-
-.footer-body .tempMaxMin {
-  font-size: 14px;
-}
-
-.icon {
-  display: block;
-  display: flex;
-  align-items: center;
-  font-size: 30px;
-  padding: 0 5px;
+.Card .temp i {
+  font-size: 25px;
 }
 
 .footer {
   display: flex;
-  background-color: white;
-  color: black;
-  padding: 5px;
+  padding: 20px 0px;
 }
 
-.humidity {
+.footer i {
+  font-size: 30px;
+}
+.cardLeft,
+.cardRight {
   display: flex;
 }
 
-.wind {
-  display: flex;
+.footerBody .arrow {
+  font-size: 35px;
+}
+
+.footer .cardRight {
   margin-left: auto;
+}
+
+.footer .wrap-content {
+  margin-left: 20px;
 }

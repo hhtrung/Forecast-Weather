@@ -1,23 +1,17 @@
-.App{
+.App .body{
   display: flex;
-  margin: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
-.App .content{
-  width: 66.67%;
+.App .body .listCard{
+  min-width: 75%;
 }
 
-.App .sidebar{
-  text-align: center;
-  width: 33.33%;
-}
-
-.listCard{
-  display: flex;
+.App .body .sidebar{
+  min-width: 25%;
 }
 
 .App input{
-  box-shadow: 5px 5px 2px grey;
-  margin-bottom: 20px;
+  min-width: 100%;
+  margin: 25px 0px;
 }
+

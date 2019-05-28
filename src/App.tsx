@@ -4,8 +4,18 @@ import axios from "axios";
 import History from "./components/History";
 import Card from "./components/Card";
 import Suggestion from "./components/Suggestion";
-class App extends React.Component {
-  constructor(props) {
+
+interface Props {}
+
+interface State {
+  valueInput: string;
+  history: any[];
+  cities: any[];
+  weathers: any[];
+}
+
+class App extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       valueInput: "",
@@ -13,44 +23,44 @@ class App extends React.Component {
       cities: [],
       weathers: []
     };
-    this.inputElement = React.createRef();
+    // this.inputElement = React.createRef();
   }
+
+  public geoSuccess = (position: any) => {
+    const lat = position.coords.latitude.toFixed(2);
+    const long = position.coords.longitude.toFixed(2);
+    axios({
+      method: "GET",
+      url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&APPID=79e5a60cd7630f97308d4feaa26cf75d`,
+      data: null
+    }).then(res => {
+      this.setState({
+        weathers: [res.data, ...this.state.weathers]
+      });
+    });
+  };
+
+  public geoError = () => {
+    console.log("you was blocked your location");
+  };
 
   componentDidMount() {
-    /********** focus input **********/
-    this.inputElement.current.focus();
-    /*********** take location ***********/
-    let geo_success = position => {
-      const lat = position.coords.latitude.toFixed(2);
-      const lon = position.coords.longitude.toFixed(2);
+    // focus input
+    // this.inputElement.current.focus();
 
-      axios({
-        method: "GET",
-        url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=79e5a60cd7630f97308d4feaa26cf75d`,
-        data: null
-      }).then(res => {
-        this.setState({
-          weathers: [...this.state.weathers, res.data]
-        });
-      });
-    };
+    navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoError);
 
-    let geo_error = () => {
-      console.log("you was blocked your location");
-    };
-    navigator.geolocation.getCurrentPosition(geo_success, geo_error);
-
-    /*********** show history ***********/
-    let history = JSON.parse(localStorage.getItem("history"));
+    // history
+    const history = localStorage.getItem("history");
     if (history) {
-      return this.setState({
-        history
+      let historyParsed = JSON.parse(history);
+      this.setState({
+        history: historyParsed
       });
     }
-    return this.setState({ history: [], valueInput: "" });
   }
 
-  onClickHistoryTag = index => {
+  public onClickHistoryTag = (index: number) => {
     let weathers = this.state.history[index].info;
     if (typeof weathers === "object") {
       this.setState({
@@ -59,7 +69,7 @@ class App extends React.Component {
     }
   };
 
-  onClickSuggest = city => {
+  public onClickSuggest = (city: string) => {
     axios({
       method: "GET",
       url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=79e5a60cd7630f97308d4feaa26cf75d`,
@@ -77,13 +87,13 @@ class App extends React.Component {
     });
   };
 
-  onChangeInput = event => {
+  public onChangeInput = (event: any) => {
     this.setState({
       valueInput: event.target.value
     });
   };
 
-  onKeyUp = event => {
+  public onKeyUp = (event: { keyCode: any; target: any }) => {
     if (event.keyCode === 13) {
       let city = event.target.value.trim();
       let date = new Date().toDateString();
@@ -120,33 +130,34 @@ class App extends React.Component {
   render() {
     let { valueInput, weathers, history } = this.state;
     return (
-      <div className="App">
-        <div className="content">
-          <input
-            className="row form-control"
-            placeholder="the weather of . . ."
-            onChange={this.onChangeInput}
-            value={valueInput}
-            onKeyUp={this.onKeyUp}
-            ref={this.inputElement}
+      <div className="App container">
+        <input
+          className="row form-control"
+          placeholder="the weather of . . ."
+          onChange={this.onChangeInput}
+          value={valueInput}
+          onKeyUp={this.onKeyUp}
+          // ref={this.inputElement}
+        />
+        {valueInput !== "" && (
+          <Suggestion
+            className="row"
+            valueInput={valueInput}
+            onClickSuggest={this.onClickSuggest}
           />
-          {valueInput !== "" && (
-            <Suggestion
-              valueInput={valueInput}
-              onClickSuggest={this.onClickSuggest}
-            />
-          )}
+        )}
 
+        <div className="body">
           <div className="listCard">
             {weathers.map((city, index) => {
               return (
                 <Card
                   key={index}
                   nameCity={city.name}
-                  tempC={(city.main.temp - 273.15).toFixed(0)}
+                  tempC={+(city.main.temp - 273.15).toFixed(0)}
                   des={city.weather[0].description}
-                  tempMin={(city.main.temp_min - 273.15).toFixed(0)}
-                  tempMax={(city.main.temp_max - 273.15).toFixed(0)}
+                  tempMin={+(city.main.temp_min - 273.15).toFixed(0)}
+                  tempMax={+(city.main.temp_max - 273.15).toFixed(0)}
                   humidity={city.main.humidity}
                   wind={city.wind.speed}
                   iconWeather={city.weather[0].main}
@@ -154,21 +165,21 @@ class App extends React.Component {
               );
             })}
           </div>
-        </div>
-        <div className="sidebar">
-          <h1>History</h1>
-          {history.map((his, index) => {
-            return (
-              <History
-                his={his.name}
-                key={index}
-                index={index}
-                date={his.date}
-                info={his.info}
-                onClick={() => this.onClickHistoryTag(index)}
-              />
-            );
-          })}
+          <div className="sidebar">
+            <h1>History</h1>
+            {history.map((his, index) => {
+              return (
+                <History
+                  his={his.name}
+                  key={index}
+                  index={index}
+                  date={his.date}
+                  info={his.info}
+                  onClick={() => this.onClickHistoryTag(index)}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     );

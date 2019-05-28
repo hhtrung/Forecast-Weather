@@ -2,15 +2,25 @@ import React from "react";
 import ItemSuggest from "./ItemSuggest";
 import "./../assets/css/SuggestionCard.css";
 import axios from "axios";
-class Suggestion extends React.Component {
-  constructor(props) {
+
+interface Props{
+  valueInput: any,
+  onClickSuggest: any,
+  className: string
+}
+interface State{
+  listCityMatched: any[]
+}
+
+class Suggestion extends React.Component<Props, State> {
+  constructor(props:Props) {
     super(props);
     this.state = {
       listCityMatched: []
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     let city = this.props.valueInput;
     if (prevProps.valueInput !== this.props.valueInput) {
       axios({

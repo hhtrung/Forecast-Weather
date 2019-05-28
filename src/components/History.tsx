@@ -1,10 +1,19 @@
 import React from "react";
 import "./../assets/css/History.css";
 
-function History(props) {
+interface Props{
+  key: number,
+  index: number,
+  his: any[],
+  date: string,
+  info: any,
+  onClick: any
+}
+
+function History(props:Props) {
   let { index, his, date, info } = props;
   return (
-    <div {...props} className="row" style={{ backgroundColor: "#DDD" }}>
+    <div {...props} style={{ backgroundColor: "#DDD" }}>
       {info !== "wrong name" ? (
         <div className="haveCity">
           {index + 1}. {his} : &nbsp; <span>{date}</span>

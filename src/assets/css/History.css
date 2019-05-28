@@ -1,13 +1,18 @@
-.row{
+.sidebar{
     cursor: pointer;
+    padding: 5px 0px 5px 30px;
+    box-sizing: border-box;
 }
 
-.row .haveCity:hover{
+.sidebar .haveCity:hover{
     color: rgb(62, 125, 226);
 }
 
-.row .unknowCity{
+.sidebar .unknowCity{
     text-decoration: line-through;
-    /* pointer-events: none; */
+    pointer-events: none;
     cursor: not-allowed;
+}
+.sidebar div{
+    padding: 0px 8px;
 }
