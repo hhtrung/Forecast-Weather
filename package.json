@@ -2,9 +2,11 @@
   "name": "forecast-weather",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://hhtrung.github.io/forecast-weather",
   "dependencies": {
     "@types/react": "^16.8.18",
     "@types/react-dom": "^16.8.4",
+    "gh-pages": "^2.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-file-reader": "^1.1.4",
@@ -14,8 +16,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "babel src -d lib",
+    "build": "react-scripts build",
     "test": "jest",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
