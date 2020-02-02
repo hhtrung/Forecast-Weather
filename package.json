@@ -2,7 +2,7 @@
   "name": "forecast-weather",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hhtrung.github.io/forecast-weather",
+  "homepage": "https://hhtrung.github.io/Forecast-Weather/",
   "dependencies": {
     "@types/react": "^16.8.18",
     "@types/react-dom": "^16.8.4",
